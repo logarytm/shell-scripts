@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# file change monitor
+# example: fmon 'pdflatex main'
+while (find -maxdepth 5 -type d || exit 0) | xargs inotifywait -e create -e modify >> /dev/null 2>&1; do
+  echo "[$(date +%H:%M)] rebuilding..."
+  started_at=$(date +%s%N)
+  eval "$1"
+  status_code=$?
+  finished_at=$(date +%s%N)
+  exec_time=$(((finished_at-started_at)/1000000))
+  time_unit=ms
+  if [ $exec_time -gt 1000 ]; then
+    time_unit=s
+    exec_time=$((exec_time/1000))
+  fi
+  if [ $status_code -ne 0 ]; then
+    echo "[$(date +%H:%M)] command exitted with exit code $status_code"
+  else
+    echo "fmon: built in $exec_time $time_unit"
+  fi
+  # prevent event flood
+  sleep ${DELAY-.05}
+done

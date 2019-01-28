@@ -1,0 +1,4 @@
+#!/bin/sh
+dir="$2"
+img="$1"
+mksquashfs "$dir" "$img" -b 1048576 -comp xz -Xdict-size 100%

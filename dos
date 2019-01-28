@@ -1,0 +1,6 @@
+#!/bin/bash
+# dosbox under gnome fails to capture keyboard, so just run it in a nested
+# X11 server ¯\_(ツ)_/¯
+Xephyr -ac -screen 640x400 :2 & XEPHYR_PID=$!
+DISPLAY=:2 dosbox & DOSBOX_PID=$!
+wait $XEPHYR_PID $DOSBOX_PID

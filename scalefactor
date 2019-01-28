@@ -1,0 +1,3 @@
+#!/bin/sh
+dconf write /org/gnome/settings-daemon/plugins/xsettings/overrides "[{'Gdk/WindowScalingFactor', <$1>}]"
+# dconf write /org/gnome/desktop/interface/text-scaling-factor 2

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+find . -type f \( \
+	-name '*.log' \
+	-or -name '*.fdb_latexmk' \
+	-or -name '*.aux' \
+	-or -name '*.toc' \
+	-or -name '*.fls' \
+	-or -name '*.out' \
+	-or -name '*.synctex*' \
+\) -print -delete

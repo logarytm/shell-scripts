@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -x
+if ! [ "$1" ]; then
+  echo "error: missing database name"
+  exit 1
+fi
+name=$1
+exec docker run \
+  -p 5432:5432 \
+  -v $HOME/volatile/db/postgres-$name:/var/lib/postgresql/data \
+  --name postgres-$name \
+  -e POSTGRES_DB=$name \
+  -e POSTGRES_USER=$name \
+  -e POSTGRES_PASSWORD=$name \
+  postgres

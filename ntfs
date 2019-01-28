@@ -1,0 +1,3 @@
+#!/bin/sh
+# mount a ntfs volume as the current user, with proper permission masks
+exec sudo mount -o fmask=0133,dmask=0022,uid=`id -u`,gid=`id -g` "$1" "$2"

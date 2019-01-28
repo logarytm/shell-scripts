@@ -1,0 +1,2 @@
+#!/bin/bash
+acpitool -w | grep enabled | grep -v LID | cut -d. -f1 | xargs -n 1 sudo acpitool -W

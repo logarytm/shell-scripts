@@ -1,0 +1,33 @@
+#!/usr/bin/env -S tcc -run
+// env -S is a useful gnuism, see https://unix.stackexchange.com/a/481150
+// look, I can run C programs as scripts!
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+
+static char next();
+
+int
+main(int argc, char argv[])
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    srand(tv.tv_usec);
+    int n = 3;
+    while (n--) {
+        putchar(next());
+    }
+	puts("");
+}
+
+static char
+next()
+{
+    switch (rand() % 3) {
+    case 0: return rand() % (90 - 65) + 65;
+    case 1: return rand() % (122 - 97) + 97;
+    case 2: return '0' + rand() % 10;
+    }
+}
+
+// vim: ft=c

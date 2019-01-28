@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# rasterize all text in a pdf file
+infile="$1"
+tmpfile="${infile%%.*}.ps"
+outfile="${infile%%.*}-print.pdf"
+pdf2ps "$infile" "$tmpfile"
+ps2pdf "$tmpfile" "$outfile"
+rm -v "$tmpfile"

@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+my $nobox = 0; # Should box warning be excluded
+my $nextlines = 0;
+my $didprint = 0;
+my $parens = 0;
+
+sub occurs {
+    my $char = shift;
+    my $str = shift;
+    return length( $str =~ s/[^\Q$char\E]//rg );
+}
+
+while (<>) {
+    if ($nextlines > 0 or $parens > 0) { $nextlines--; $didprint = 1; print STDERR $_; }
+    elsif (/^(!\s+)?LaTeX (?:Warning|Error)/i) { $didprint = 1; print STDERR $_; }
+    elsif (/^! Undefined control sequence\./i) { chomp; $didprint = 1; print STDERR $_, ": "; $nextlines = 1; }
+    elsif (/^! Use of .* doesn't match its definition\./i) { $didprint = 1; print STDERR $_; $nextlines = 3; }
+    elsif (/^!/i) { $didprint = 1; print STDERR $_; }
+    elsif (!$nobox && /(overfull|underfull|badbox)/i) { $didprint = 1; print STDERR $_; }
+    if ($didprint) { $parens += occurs('(', $_) - occurs(')', $_); if ($parens < 0) { $parens = 0; } }
+    $didprint = 0;
+}

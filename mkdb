@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+TYPE=$1
+NAME=$2
+
+if [ "$#" != 2 ]; then
+    echo "usage: mkdb <mysql|postgres> <name>"
+    exit 1
+fi
+
+case $TYPE in
+    m|mysql) (
+        echo "CREATE DATABASE $NAME;"
+        echo "GRANT ALL PRIVILEGES ON $NAME.* TO '$NAME'@'localhost' IDENTIFIED BY '$NAME';"
+        echo "FLUSH PRIVILEGES;"
+    )| mysql -uroot -proot ;;
+
+    p|postgres) echo "mkdb: postgres not implemented" && exit 1 ;;
+
+    *) echo "mkdb: bad database type" && exit 1
+esac

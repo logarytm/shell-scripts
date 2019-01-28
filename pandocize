@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# im not quite sure why i wrote it
+
+INPUT=$1
+TYPE=$2
+OUTPUT=$(mktemp).$TYPE
+shift
+shift
+
+echo compiling $INPUT to $OUTPUT
+sed 1d $INPUT | pandoc /dev/stdin "$@" -T$TYPE -o $OUTPUT
+echo opening $OUTPUT
+xdg-open $OUTPUT
